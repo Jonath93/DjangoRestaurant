@@ -77,7 +77,7 @@ WSGI_APPLICATION = 'KioskoRestaurant.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'restaurant',
+        'NAME': 'Restaurant',
         'USER':'odoo',
         'PASSWORD':'Lokoss25',
         'HOST':'127.0.0.1',
@@ -125,4 +125,13 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "static"),
+    #'/home/jonathan/Documentos/miditec/KioskoRestaurant/Kiosko/static/',
+]
+
 STATIC_URL = '/static/'
+
+
+STATIC_ROOT="/home/jonathan/Documentos/miditec/KioskoRestaurant/Kiosko/static/"
+#MEDIA_URL="/home/jonathan/Documentos/miditec/KioskoRestaurant/Kiosko/static/"

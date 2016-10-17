@@ -14,3 +14,5 @@ class ProductKiosko(generic.ListView):
     model = ProductTemplate
     context_object_name='latest_name_list'
     template_name = 'kiosko.html'
+
+

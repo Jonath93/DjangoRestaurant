@@ -1,5 +1,5 @@
 var cantidad = 1;
-var btncantidad = document.getElementsByTagName("button") ;
+var btncantidad = document.getElementsByTagName("buttonproduct") ;
 
 
 function addListProduct(name) {

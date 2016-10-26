@@ -106,6 +106,7 @@ class ProductTemplate(models.Model):
     track_incoming=models.BooleanField()
     sale_delay=models.IntegerField()
     expense_pdt=models.BooleanField()
+    pos_categ_id=models.IntegerField()
     income_pdt=models.BooleanField()
     available_in_pos=models.BooleanField()
     to_weight=models.BooleanField()
@@ -116,3 +117,15 @@ class ProductTemplate(models.Model):
     class Meta:
         db_table='product_template'
 
+class PosCategory(models.Model):
+    id=models.IntegerField(primary_key=True)
+    create_uid=models.IntegerField()
+    create_date=models.DateTimeField()
+    name=models.CharField(max_length=200)
+    sequence=models.IntegerField()
+    image=models.BinaryField()
+    write_uid=models.IntegerField()
+    write_date=models.DateTimeField()
+
+    class Meta:
+        db_table='pos_category'

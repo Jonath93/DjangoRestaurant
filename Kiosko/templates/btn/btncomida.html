@@ -1,0 +1,32 @@
+{% extends "view/kiosko.html" %}
+{%block title%}Kiosko{%endblock%}
+
+
+{% block content %}
+ <div  class="row">
+   {% for producttemplate in category %}
+            <div class="col s2 #ff8f00 amber darken-3 textobtn center-align" >
+                <div class="card-content white-text">
+                    <span class="card-title">{{producttemplate.name}}</span>
+                    <br>
+                    <img src="data:image/png;base64,{{producttemplate.image}}" class="responsive-img">
+                </div>
+                <div class="card-action">
+                     <label class="blue-text text-darken-2" value="{{producttemplate.list_price}}">{{producttemplate.list_price}}</label>
+                <a class="btn-floating waves-effect waves-light red right modal-trigger" href="#modal1"><i class="material-icons">add</i></a>
+                </div>
+            </div>
+
+            <!-- Modal Structure -->
+            <div id="modal1" class="modal">
+                    <div class="modal-content">
+                    <h4>Modal Header</h4>
+                     <img src="data:image/png;base64,{{producttemplate.image}}" class="responsive-img">
+                    </div>
+                    <div class="modal-footer">
+                    <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Agree</a>
+                    </div>
+                </div>
+            
+    {% endfor %}
+{% endblock %}

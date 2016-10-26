@@ -2,6 +2,7 @@ from __future__ import unicode_literals
 import datetime
 from django.utils import timezone 
 from django.db import models
+from base64 import b64decode
 
 #tabla sale_order
 class SaleOrder(models.Model):
@@ -28,7 +29,6 @@ class SaleOrder(models.Model):
     picking_policy=models.CharField(max_length=200,null=False)
     warehouse_id=models.IntegerField(null=False)
     shipped=models.BooleanField()
-    commitment_date=models.DateTimeField()
 
     class Meta:
         db_table = 'sale_order'
@@ -54,7 +54,6 @@ class MrpProduction(models.Model):
     ready_production=models.BooleanField()
     hour_total=models.FloatField()
     location_dest_id=models.IntegerField()
-    allow_reorder=models.BooleanField()
     
     class Meta:
         db_table = 'mrp_production'
@@ -83,6 +82,8 @@ class ProductTemplate(models.Model):
     list_price=models.FloatField()
     weight=models.FloatField()
     color=models.IntegerField()
+    image=models.BinaryField()
+    image_small=models.BinaryField()
     write_uid=models.IntegerField()
     mes_type=models.CharField(max_length=200)
     uom_id=models.IntegerField(null=False)
@@ -105,13 +106,26 @@ class ProductTemplate(models.Model):
     track_incoming=models.BooleanField()
     sale_delay=models.IntegerField()
     expense_pdt=models.BooleanField()
+    pos_categ_id=models.IntegerField()
     income_pdt=models.BooleanField()
     available_in_pos=models.BooleanField()
     to_weight=models.BooleanField()
-    purchase_ok=models.BooleanField()
     track_production=models.BooleanField()
     produce_delay=models.IntegerField()
+    file_path=models.CharField(max_length=125)
 
     class Meta:
         db_table='product_template'
 
+class PosCategory(models.Model):
+    id=models.IntegerField(primary_key=True)
+    create_uid=models.IntegerField()
+    create_date=models.DateTimeField()
+    name=models.CharField(max_length=200)
+    sequence=models.IntegerField()
+    image=models.BinaryField()
+    write_uid=models.IntegerField()
+    write_date=models.DateTimeField()
+
+    class Meta:
+        db_table='pos_category'

@@ -1,0 +1,110 @@
+{%load static%}
+<!DOCTYPE html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>{%block title%}Kiosko{%endblock%}</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--Import Google Icon Font-->
+    <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!--Import materialize.css-->
+    <link type="text/css" rel="stylesheet" href="{% static 'css/materialize.min.css'%}"  media="screen,projection"/>
+
+    <link href="{% static 'css/styleKiosko.css'%}" rel="stylesheet" type="text/css" >
+    <link href="{% static 'css/simple-sidebar.css'%}" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{%static 'sweetalert-master/dist/sweetalert.css' %}">
+
+    <script src="{% static 'sweetalert-master/dist/sweetalert.min.js'%}"></script>
+    <script type="text/javascript" src="{% static 'js/jquery-3.1.1.min.js'%}"></script>
+    <script type="text/javascript" src="{% static 'js/materialize.min.js'%}"></script>   
+</head>
+<body class="#cfd8dc blue-grey lighten-4">
+     <header>
+         <div class="col s12 center-align"><span class="flow-text">Bienvenidos</span></div>
+         
+     </header>
+    
+     <main>
+        <ul id="slide-out" class="side-nav fixed fill-height-or-more">
+                <li >
+                    <a href="{% url 'productComida' 2 %}" class="waves-effect waves-light btn-large btnContent #01579b light-blue darken-4 center-align">
+                    <p class="black-text">comida</p>
+                    <img src="{% static 'img/comida1.png'%}" class="imgbtn">
+                    </a>
+                </li>
+                <li >
+                    <a href="{% url 'productComida' 3 %}" class="waves-effect waves-light btn-large btnContent #01579b light-blue darken-4 center-align">
+                    <p class="black-text">Paquetes</p>
+                    <img src="{% static 'img/comida2.png'%}" class="imgbtn">
+                    </a>
+                </li>
+                <li >
+                    <a href="{% url 'productComida' 1 %}" class="waves-effect waves-light btn-large btnContent #01579b light-blue darken-4 center-align">
+                    <p class="black-text">Bebidas</p>
+                    <img src="{% static 'img/comida3.png'%}" class="imgbtn">
+                    </a>
+                </li>
+                <li >
+                    <a href="{% url 'productComida' 4 %}" class="waves-effect waves-light btn-large btnContent #01579b light-blue darken-4 center-align">
+                    <p class="black-text">Postres</p>
+                    <img src="{% static 'img/comida4.png'%}" class="imgbtn">
+                    </a>
+                </li>
+        </ul>
+        <a href="#" data-activates="slide-out" class="button-collapse hide-on-large-only"><i class="material-icons">menu</i></a>
+
+        <!--contenido de la pagina-->
+        <div id='content'>
+            {% block content %}{% endblock%}
+        </div>
+        <div class='row'>
+            <div class='grid-example col s12 m10 l3 #90a4ae blue-grey lighten-2 tablesize right'>
+                <div class="row">
+                    <table class="responsive-table centered" id="tableproduct">
+                        <thead class="tablehead">
+                            <tr>
+                                <th class="text-center" width="70%">Nombre</th>
+                                <th class="text-center" width="15%">Cant.</th>
+                                <th class="text-center" width="15%">Prec.</th>
+                                <th class="text-center" width="15%"></th>
+                            </tr>
+                        </thead>
+                        <tbody class="tablebody">
+                        </tbody>
+                    </table>
+                </div>
+                <div class="row">
+                    <p class=''>Iva</p>
+                    <p class=''>Total</p>
+                </div>
+            </div>
+        </div>
+        
+     </main>
+     <footer>
+
+     </footer>
+       
+        
+
+
+
+
+
+        <!--Scripts--> 
+        <script type="text/javascript">
+
+        // Initialize collapse button
+        $(".button-collapse").sideNav();
+        $(document).ready(function(){
+            // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered
+            $('.modal-trigger').leanModal();
+        });
+        </script>
+        <script type="text/javascript" src="{% static 'js/app.js'%}"></script>
+</body>
+</html>
+

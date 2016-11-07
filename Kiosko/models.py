@@ -3,22 +3,25 @@ import datetime
 from django.utils import timezone 
 from django.db import models
 from base64 import b64decode
+from datetime import datetime,date
+
 
 #tabla sale_order
 class SaleOrder(models.Model):
-    create_date=models.DateTimeField()
+    id=models.IntegerField(primary_key=True)
+    create_date=models.DateTimeField(default=datetime.now, blank=True)
     write_uid=models.IntegerField()
-    date_order=models.DateTimeField(null=False)
-    partner_id=models.IntegerField(null=False)
+    date_order=models.DateTimeField(default=datetime.now, blank=True,null=False)
+    partner_id=models.ForeignKey('ResPartner',null=True,blank=True)
     amount_tax=models.FloatField()
     procurement_group_id=models.IntegerField()
     amount_untaxed=models.FloatField()
-    message_last_post=models.DateTimeField()
+    message_last_post=models.DateTimeField(default=datetime.now, blank=True)
     company_id=models.IntegerField()
     state=models.CharField(max_length=200)
     pricelist_id=models.IntegerField(null=False)
     create_uid=models.IntegerField()
-    write_date=models.DateTimeField()
+    write_date=models.DateTimeField(default=datetime.now, blank=True)
     partner_invoice_id=models.IntegerField(null=False)
     user_id=models.IntegerField()
     date_confirm=models.DateField()
@@ -33,7 +36,36 @@ class SaleOrder(models.Model):
     class Meta:
         db_table = 'sale_order'
 
+class SaleOrderLine(models.Model):
+    id=models.IntegerField(primary_key=True)
+    product_uos_qty=models.FloatField()
+    create_date=models.DateTimeField(default=datetime.now, blank=True)
+    product_uom=models.IntegerField(null=False,default=1)
+    sequence=models.IntegerField(null=False)
+    price_unit=models.FloatField()
+    product_uom_qty=models.FloatField(null=False)
+    write_uid=models.IntegerField(default=1)
+    invoiced=models.BooleanField(default=False)
+    create_uid=models.IntegerField(default=1)
+    company_id=models.IntegerField(default=1)
+    name=models.CharField(max_length=200,null=False)
+    state=models.CharField(max_length=200,null=False)
+    order_partner_id=models.IntegerField(null=False)
+    order_id=models.IntegerField(null=False)
+    discount=models.FloatField()
+    write_date=models.DateTimeField(default=datetime.now, blank=True)
+    product_id=models.IntegerField()
+    salesman_id=models.IntegerField(default=1)
+
+    class Meta:
+        db_table='sale_order_line'
+
+
+
+
+
 class MrpProduction(models.Model):
+    id=models.IntegerField(primary_key=True)
     create_date=models.DateField()
     product_uom=models.IntegerField()
     product_uos_qty=models.FloatField()
@@ -59,6 +91,7 @@ class MrpProduction(models.Model):
         db_table = 'mrp_production'
 
 class ResUsers(models.Model):
+    id=models.IntegerField(primary_key=True)
     active=models.BooleanField()
     login=models.CharField(max_length=64)
     password=models.CharField(max_length=200)
@@ -79,6 +112,7 @@ class ResUsers(models.Model):
         db_table='res_users'
 
 class ProductTemplate(models.Model):
+    id=models.IntegerField(primary_key=True)
     list_price=models.FloatField()
     weight=models.FloatField()
     color=models.IntegerField()
@@ -94,6 +128,7 @@ class ProductTemplate(models.Model):
     categ_id=models.IntegerField(null=False)
     company_id=models.IntegerField()
     uom_po_id=models.IntegerField(null=False)
+    description=models.CharField(max_length=9000)
     weight_net=models.FloatField()
     volume=models.IntegerField()
     write_date=models.DateTimeField()
@@ -129,3 +164,10 @@ class PosCategory(models.Model):
 
     class Meta:
         db_table='pos_category'
+
+class ResPartner(models.Model):
+    id=models.IntegerField(primary_key=True)
+    name=models.CharField(max_length=200)
+    
+    class Meta:
+        db_table='res_partner'

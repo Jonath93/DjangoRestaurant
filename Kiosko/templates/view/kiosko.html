@@ -21,67 +21,64 @@
     <script type="text/javascript" src="{% static 'js/jquery-3.1.1.min.js'%}"></script>
     <script type="text/javascript" src="{% static 'js/materialize.min.js'%}"></script>   
 </head>
-<body class="#cfd8dc blue-grey lighten-4">
+<body class="#cfd8dc blue-grey lighten-4" onload="loadTabla()">
      <header>
          <div class="col s12 center-align"><span class="flow-text">Bienvenidos</span></div>
          
      </header>
     
      <main>
-        <ul id="slide-out" class="side-nav fixed fill-height-or-more">
-                <li >
-                    <a href="{% url 'productComida' 2 %}" class="waves-effect waves-light btn-large btnContent #01579b light-blue darken-4 center-align">
-                    <p class="black-text">comida</p>
-                    <img src="{% static 'img/comida1.png'%}" class="imgbtn">
-                    </a>
-                </li>
-                <li >
-                    <a href="{% url 'productComida' 3 %}" class="waves-effect waves-light btn-large btnContent #01579b light-blue darken-4 center-align">
-                    <p class="black-text">Paquetes</p>
-                    <img src="{% static 'img/comida2.png'%}" class="imgbtn">
-                    </a>
-                </li>
-                <li >
-                    <a href="{% url 'productComida' 1 %}" class="waves-effect waves-light btn-large btnContent #01579b light-blue darken-4 center-align">
-                    <p class="black-text">Bebidas</p>
-                    <img src="{% static 'img/comida3.png'%}" class="imgbtn">
-                    </a>
-                </li>
-                <li >
-                    <a href="{% url 'productComida' 4 %}" class="waves-effect waves-light btn-large btnContent #01579b light-blue darken-4 center-align">
-                    <p class="black-text">Postres</p>
-                    <img src="{% static 'img/comida4.png'%}" class="imgbtn">
-                    </a>
-                </li>
-        </ul>
-        <a href="#" data-activates="slide-out" class="button-collapse hide-on-large-only"><i class="material-icons">menu</i></a>
+         {% block sidebar %}
+         <ul id="slide-out" class="side-nav fixed fill-height-or-more">
+             {% for poscategory in latest_name_list %}
+             <li >
+                <a href="{% url 'productComida' poscategory.id %}" class="waves-effect waves-light btn-large btnContent #01579b light-blue darken-4 center-align">
+                    <p class="black-text">{{poscategory.name}}</p>
+                    <img src="data:image/png;base64,{{poscategory.image}}" class="imgbtn">
+                </a>
+            </li>
+             {% endfor %}
+                
+         </ul>
+         <a href="#" data-activates="slide-out" class="button-collapse hide-on-large-only"><i class="material-icons">menu</i></a>
+         {% endblock %}
 
         <!--contenido de la pagina-->
         <div id='content'>
             {% block content %}{% endblock%}
         </div>
-        <div class='row'>
-            <div class='grid-example col s12 m10 l3 #90a4ae blue-grey lighten-2 tablesize right'>
-                <div class="row">
-                    <table class="responsive-table centered" id="tableproduct">
-                        <thead class="tablehead">
-                            <tr>
-                                <th class="text-center" width="70%">Nombre</th>
-                                <th class="text-center" width="15%">Cant.</th>
-                                <th class="text-center" width="15%">Prec.</th>
-                                <th class="text-center" width="15%"></th>
-                            </tr>
-                        </thead>
-                        <tbody class="tablebody">
-                        </tbody>
-                    </table>
-                </div>
-                <div class="row">
-                    <p class=''>Iva</p>
-                    <p class=''>Total</p>
+        {% block table %}
+        <form method="POST">
+            {% csrf_token %}
+            <div class='row'>
+                <div class='grid-example col l3 s7 m4 #90a4ae blue-grey lighten-2 tablesize right' id="table-wrapper">
+                    <div class="row" id="table-scroll">
+                        <table class="centered highlight" id="tableproduct">
+                            <thead class="tablehead">
+                                <tr>
+                                    <th class="text-center text" width="70%">Nombre</th>
+                                    <th class="text-center text" width="15%">Cant.</th>
+                                    <th class="text-center text" width="15%">Prec.</th>
+                                    <th class="text-center text" width="15%">Act.</th>
+                                </tr>
+                            </thead>
+                            <tbody class="tablebody">
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="row">
+                        <div class="right">
+                            <p>
+                                Sub-total: &nbsp;<span id="SubTotal"></span><br>
+                                IVA:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;<span id="IVA"></span><br>
+                                Total:&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;<span id="Total"></span><br>
+                            </p>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
+        </form>
+        {% endblock %}
         
      </main>
      <footer>
@@ -99,8 +96,8 @@
 
         // Initialize collapse button
         $(".button-collapse").sideNav();
+        
         $(document).ready(function(){
-            // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered
             $('.modal-trigger').leanModal();
         });
         </script>

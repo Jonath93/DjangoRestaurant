@@ -55,7 +55,7 @@ ROOT_URLCONF = 'KioskoRestaurant.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR,'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -127,11 +127,10 @@ USE_TZ = True
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
-    #'/home/jonathan/Documentos/miditec/KioskoRestaurant/Kiosko/static/',
+
 ]
 
 STATIC_URL = '/static/'
 
 
 STATIC_ROOT="/home/jonathan/Documentos/miditec/KioskoRestaurant/Kiosko/static/"
-#MEDIA_URL="/home/jonathan/Documentos/miditec/KioskoRestaurant/Kiosko/static/"

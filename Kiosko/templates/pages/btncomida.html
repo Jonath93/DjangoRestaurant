@@ -1,0 +1,46 @@
+{% extends "view/kiosko.html" %}
+{%block title%}Kiosko{%endblock%}
+
+{% block content %}
+ <div  class="row">
+   {% for producttemplate in product_list %}
+
+        <div class="col l3 s6 m3 #1565c0 blue darken-3 textobtn" >
+            <div class="card">
+                <div class="card-title activator grey-text text-darken-4">
+                    <button onclick="addListProduct(nombre='{{producttemplate.name}}',price={{producttemplate.list_price}},id={{forloop.counter}},product_id={{producttemplate.id}})"><img src="data:image/png;base64,{{producttemplate.image}}" class="responsive-img activador" ></button>
+                </div>
+            </div>
+            <div class="card-content">
+                <div class="row ">
+                    <span class="card-title card-title activator text-darken-2 id_nombre"><h5>{{producttemplate.name}}</h5></span>
+                    <p id="listprice" class="cssCantidad">{{producttemplate.list_price}}</p>
+                    <p class="cssCantidad">Cantidad:<span class="id_cantidad cssCantidad">0</span></p>
+                </div>
+
+                <div class="row">
+                    <div class="right">
+                         <a class="btn-floating waves-effect waves-light red  modal-trigger" href="#modal{{forloop.counter}}"><i class="material-icons">info_outline</i></a>
+
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Modal Structure -->
+        <div id="modal{{forloop.counter}}" class="modal center">
+                <div class="modal-content">
+                    <h4 class="center">{{producttemplate.name}}</h4>
+                    <img src="data:image/png;base64,{{producttemplate.image}}" >
+                    <p>descripción:{{producttemplate.description}} <br>
+                        Precio:{{producttemplate.list_price}}</p>
+                </div>
+                <div class="modal-footer">
+                    <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Agree</a>
+                </div>
+
+        </div>
+     {% endfor %}
+{% endblock %}

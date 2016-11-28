@@ -10,15 +10,15 @@
         <link type="text/css" rel="stylesheet" href="{% static 'css/materialize.min.css'%}"  media="screen,projection"/>
         <link href="{% static 'css/styleKiosko.css'%}" rel="stylesheet" type="text/css">
     </head>
-    <body class="bodyindex">
+    <body class="bodyindex" onload="clearStorage()">
         <div class="row">
 
             <div class="container">
-                <div class="text-center">
+                <div class="center">
                     <h1>Bienvenido Restaurant</h1>
                 </div>
                 <div>
-                    <a class="waves-effect waves-light btn botonindex textoposicion" href="{% url 'product' %}">
+                    <a class="waves-effect waves-light btn botonindex textoposicion" href="{% url 'Category' %}">
                         <br>
                         <img src="{% static 'img/dedo.png' %}" width="75" height="75" alt="">
                         <br>
@@ -27,6 +27,7 @@
                 </div>
             </div>
         </div>
+        <script type="text/javascript" src="{% static 'js/app_formulario.js'%}"></script>
         <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
         <script type="text/javascript" src="{% static 'js/materialize.min.js'%}"></script>    
     </body>

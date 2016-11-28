@@ -1,38 +1,52 @@
 var nombres=JSON.parse(localStorage.getItem('nombres') || "[]");
 var cantidades=JSON.parse(localStorage.getItem('cantidades') || "[]");
 var precios=JSON.parse(localStorage.getItem('precios') || "[]");
+var index = JSON.parse(localStorage.getItem('index') || "[]");
+
+function addListProduct(producto,precio,indexCant,productid) {
+  var cantidad = document.getElementsByClassName("id_cantidad");
+  var valorcantidad = 1;
+  
+
+  if(valorcantidad!=0){
+
+     if(findproduct(producto)){
+        for(i=0;i<=nombres.length;i++){
+            if(nombres[i]==producto && nombres[i] !=null){
+                var valornuevo = cantidades[i] + valorcantidad;
+                cantidades[i]=valornuevo;
+                localStorage.setItem('cantidades',JSON.stringify(cantidades));
+                break;
+            }
+         }
+      }else{
+        nombres.push(producto);
+        cantidades.push(valorcantidad);
+        precios.push(precio);
+        index.push(productid);
+        localStorage.setItem('index',JSON.stringify(index));
+        localStorage.setItem('nombres',JSON.stringify(nombres));
+        localStorage.setItem('cantidades',JSON.stringify(cantidades));
+        localStorage.setItem('precios',JSON.stringify(precios));
 
 
-function addListProduct(nombre,precio,indexCant) {
-  
-  var cantidad=document.getElementsByClassName('input-number');
-  indexCant--;
-  var valorcantidad = parseInt(cantidad[indexCant].defaultValue)
-  nombres.push(nombre);
-  cantidades.push(valorcantidad);
-  precios.push(precio);
-  
-  localStorage.setItem('nombres',JSON.stringify(nombres));
-  localStorage.setItem('cantidades',JSON.stringify(cantidades));
-  localStorage.setItem('precios',JSON.stringify(precios));
-  var table = document.getElementById("tableproduct");
-  var len=table.length;
-  var newRow = table.insertRow(len);
+      }
 
-  var cell = newRow.insertCell(0);
-  cell.innerHTML="<td>"+nombre+"</td>";
-  
-  var cell = newRow.insertCell(1);
-  cell.innerHTML="<td>"+valorcantidad+"</td>";
-  
-  var cell = newRow.insertCell(2);
-  cell.innerHTML="<td>"+precio+"</td>";
 
-  var cell = newRow.insertCell(3);
-  cell.innerHTML="<td>"+'<input type="button" onclick="delListProduct(this)"/>'+"</td>";
-
-  SumaCantidad()
+    Vaciartabla();
+  }else{
+    sweetAlert("Oops...", "Por favor agregar cantidad", "error");
+  }
   
+  
+}
+
+function findproduct(producto){
+    for(i=0;i<=nombres.length;i++){
+            if(nombres[i]==producto && nombres[i] !=null){
+                return true;
+            }
+    }
 }
 
 function clearStorage(){
@@ -43,13 +57,21 @@ function delListProduct(row){
   var j=row.parentNode.parentNode.rowIndex;
   document.getElementById('tableproduct').deleteRow(j);
   id=j-1;
-  nombres.splice(id,1);
-  cantidades.splice(id,1);
-  precios.splice(id,1);
-  localStorage.setItem('nombres',JSON.stringify(nombres));
-  localStorage.setItem('cantidades',JSON.stringify(cantidades));
-  localStorage.setItem('precios',JSON.stringify(precios));
-  SumaCantidad()
+  if(cantidades[id]>0){
+    cantidades[id]-=1;
+    localStorage.setItem('cantidades',JSON.stringify(cantidades));
+    if(cantidades[id]==0){
+      nombres.splice(id,1);
+      cantidades.splice(id,1);
+      precios.splice(id,1);
+      index.splice(id,1);
+      localStorage.setItem('nombres',JSON.stringify(nombres));
+      localStorage.setItem('cantidades',JSON.stringify(cantidades));
+      localStorage.setItem('precios',JSON.stringify(precios));
+      localStorage.setItem('index',JSON.stringify(index));
+    }
+  }
+  Vaciartabla();
 
 }
 
@@ -83,39 +105,60 @@ function decreaseValue(id) {
 
 
 function loadTabla(){
-  var table = document.getElementById("tableproduct");
-  
-  for(var i=0 ;i<nombres.length;i++){
-    var len=table.length;
-    var newRow = table.insertRow(len);
-    var cell = newRow.insertCell(0);
-    cell.innerHTML="<td>"+nombres[i]+"</td>";
-  
-    var cell = newRow.insertCell(1);
-    cell.innerHTML="<td>"+cantidades[i]+"</td>";
-    
-    var cell = newRow.insertCell(2);
-    cell.innerHTML="<td>"+precios[i]+"</td>";
+    var cantidad = document.getElementsByClassName("id_cantidad");
+    var idnombre = document.getElementsByClassName("id_nombre");
+    var table = document.getElementById("tablebody");
 
-    var cell = newRow.insertCell(3);
-    cell.innerHTML="<td>"+'<input type="button" onclick="delListProduct(this)"/>'+"</td>";
-          
-  }
+  
+    for(var i=0 ;i<nombres.length;i++){
+        var len=table.childElementCount;
+        var newRow = table.insertRow(len);
+        var cell1 = newRow.insertCell(0);
+        var cell2 = newRow.insertCell(1);
+        var cell3 = newRow.insertCell(2);
+        var cell4 = newRow.insertCell(3);
+
+        cell1.innerHTML='<td>'+nombres[i]+'</td>';
+        cell2.innerHTML='<td>'+cantidades[i]+'</td>';
+        cell3.innerHTML='<td>'+precios[i]+'</td>';
+        cell4.innerHTML='<td>'+'<button onclick="delListProduct(this)"><img src="/static/img/del.png" width="10px" height="10px" ></button>'+'</td>';
+    }
+    for(var j=0 ;j<idnombre.length;j++ ){
+    cantidad[j].innerText=0;
+     for(var i=0 ;i<nombres.length;i++){
+        if(idnombre[j].textContent==nombres[i]){
+            cantidad[j].innerHTML=cantidades[i];
+        }
+     }
+    }
+
+
   SumaCantidad()
+
+}
+function Vaciartabla(){
+
+    $("#tablebody").empty();
+    $(".id_cantidad").empty();
+    loadTabla();
+
 }
 function SumaCantidad(){
-  var iva= document.getElementById("IVA");
-  var total= document.getElementById("Total");
-  var sub=document.getElementById("SubTotal");
-  var subtotal=0.00;
-  var acomulador= 0.00;
-  var ivacomulador=0.16;
-  for(var i=0 ;i<nombres.length;i++){
-    subtotal += parseFloat(precios[i])*parseFloat(cantidades[i]);
-  }
-  ivacomulador*=subtotal;
-  acomulador=subtotal+ivacomulador;
-  sub.innerHTML=subtotal;
-  iva.innerHTML=ivacomulador
-  total.innerHTML=acomulador
+
+      var iva= document.getElementById("IVA");
+      var total= document.getElementById("Total");
+      var sub=document.getElementById("SubTotal");
+      var subtotal=0.00;
+      var acomulador= 0.00;
+      var ivacomulador=0.16;
+      for(var i=0 ;i<nombres.length;i++){
+        subtotal += parseFloat(precios[i])*parseFloat(cantidades[i]);
+      }
+      ivacomulador*=subtotal;
+      acomulador=subtotal+ivacomulador;
+      sub.innerHTML=subtotal.toFixed(2);
+      iva.innerHTML=ivacomulador.toFixed(2);
+      total.innerHTML=acomulador.toFixed(2);
+
 }
+

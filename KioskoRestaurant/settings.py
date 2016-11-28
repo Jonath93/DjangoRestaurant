@@ -38,7 +38,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'jquery',
+    'djangoformsetjs',
+    'crispy_forms',
 ]
+
+CRISPY_TEMPLATE_PACK = 'uni_form'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -80,7 +85,7 @@ DATABASES = {
         'NAME': 'Restaurant',
         'USER':'odoo',
         'PASSWORD':'Lokoss25',
-        'HOST':'127.0.0.1',
+        'HOST':'localhost',
         'PORT':'5432',
         'OPTIONS': {
             'isolation_level': psycopg2.extensions.ISOLATION_LEVEL_SERIALIZABLE,

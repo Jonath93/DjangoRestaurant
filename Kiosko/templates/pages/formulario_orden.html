@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<head>
+<title>{%block title%}order{%endblock%}</title>
+</head>
+{%load static%}
+{% load crispy_forms_tags %}
+
+  <!--Import Google Icon Font-->
+<link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<!--Import materialize.css-->
+<link type="text/css" rel="stylesheet" href="{% static 'css/materialize.min.css'%}"  media="screen,projection"/>
+<link href="{% static 'css/styleKiosko.css'%}" rel="stylesheet" type="text/css">
+<script src="{% static 'sweetalert-master/dist/sweetalert.min.js'%}"></script>
+<script type="text/javascript" src="{% static 'js/jquery-3.1.1.min.js'%}"></script>
+<script type="text/javascript" src="{% static 'js/materialize.min.js'%}"></script>
+
+<body onload="SumaCantidad()">
+
+<script type="text/html" id="item-template">
+    <div id="item-__prefix__">
+        {{formset.empty_form}}
+       <!-- crispy: {% crispy formset.empty_form  %} -->
+    </div>
+    </script>
+
+<form method="POST">
+    {% csrf_token %}
+    <div class="container">
+        <div class="row">
+            <div class="col s12">
+                <h2>{{form.name.label}}: <span id="id_nombreorder"></span></h2>
+            </div>
+        </div>
+        <div class="row" >
+             <table class="centered highlight" id="tableproduct">
+                 <thead class="tablehead">
+                    <tr>
+                        <th class="text" width="70%">Nombre</th>
+                        <th class="text" width="15%">Cantidad</th>
+                        <th class="text" width="15%">Precio</th>
+                    </tr>
+                </thead>
+                <tbody id="tablebody" class="tablebody">
+
+                </tbody>
+             </table>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col s11 center">
+            <div class="row right">
+                <h5>Sub-Total: <span id="id_sub_total"></span></h5>
+                <h5>IVA: <span id="id_iva"></span></h5>
+                <h5>Total: <span id="id_total"></span></h5>
+            </div>
+        </div>
+    </div>
+
+        {{form.name}}
+        {{form.amount_tax}}
+        {{form.amount_untaxed}}
+        {{form.amount_total}}
+        {{formset.management_form}}
+
+            {% for form2 in formset %}
+                    <script>
+                    var contador = JSON.parse(localStorage.getItem('index') || "[]");
+                    document.write('<div class="item">');
+                    for(i=0;i<contador.length;i++){
+                        document.write('{{form2.name}}');
+                        document.write('{{form2.product_uos_qty}}');
+                        document.write('{{form2.price_unit}}');
+                        document.write('{{form2.product_uom_qty}}');
+                        document.write('{{form2.product_id}}');
+                    }
+                    document.write('</div>');
+                    </script>
+            {% endfor %}
+
+
+
+
+    <button type="submit" id="new_order" class="waves-effect waves-light btn-large right">terminar</button>
+</form>
+
+
+<script type="text/javascript">
+    var contador = JSON.parse(localStorage.getItem('index') || "[]");
+    var i = 0
+    while(i<contador.length){
+        var formCount = i;
+        // variables
+        var row = $(".nombreformulario").get(i);
+        var row2=$(".cantidadformulario").get(i);
+        var row3=$(".precioformulario").get(i);
+        var row4=$(".cantidad2formulario").get(i);
+        var row5=$(".product_idformulario").get(i);
+
+        $(row).attr('id','id_form-'+i+'-name');
+        $(row2).attr('id','id_form-'+i+'-product_uos_qty');
+        $(row3).attr('id','id_form-'+i+'-price_unit');
+        $(row4).attr('id','id_form-'+i+'-product_uom_qty');
+        $(row5).attr('id','id_form-'+i+'-product_id');
+
+        $(row).attr('name','form-'+i+'-name');
+        $(row2).attr('name','form-'+i+'-product_uos_qty');
+        $(row3).attr('name','form-'+i+'-price_unit');
+        $(row4).attr('name','form-'+i+'-product_uom_qty');
+        $(row5).attr('name','form-'+i+'-product_id');
+
+        // Update the total form count
+        $("#id_" + "form" + "-TOTAL_FORMS").val(formCount+1);
+        i++;
+    }
+
+
+
+
+
+
+</script>
+<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+<script type="text/javascript" src="{% static 'js/app_formulario.js'%}"></script>
+<script type="text/javascript" src="{% static 'js/materialize.min.js'%}"></script>
+<script type="text/javascript" src="{% static 'js/jquery.formset.js'%}"></script>
+</body>
+</html>
+
+

@@ -19,7 +19,7 @@
 
     <script src="{% static 'sweetalert-master/dist/sweetalert.min.js'%}"></script>
     <script type="text/javascript" src="{% static 'js/jquery-3.1.1.min.js'%}"></script>
-    <script type="text/javascript" src="{% static 'js/materialize.min.js'%}"></script>   
+    <script type="text/javascript" src="{% static 'js/materialize.min.js'%}"></script>
 </head>
 <body class="#cfd8dc blue-grey lighten-4" onload="loadTabla()">
      <header>
@@ -42,66 +42,61 @@
          </ul>
          <a href="#" data-activates="slide-out" class="button-collapse hide-on-large-only"><i class="material-icons">menu</i></a>
          {% endblock %}
-
-        <!--contenido de la pagina-->
-        <div id='content'>
-            {% block content %}{% endblock%}
-        </div>
-        {% block table %}
-        <form method="POST">
-            {% csrf_token %}
+         {% block table %}
             <div class='row'>
-                <div class='grid-example col l3 s7 m4 #90a4ae blue-grey lighten-2 tablesize right' id="table-wrapper">
-                    <div class="row" id="table-scroll">
-                        <table class="centered highlight" id="tableproduct">
-                            <thead class="tablehead">
-                                <tr>
-                                    <th class="text-center text" width="70%">Nombre</th>
-                                    <th class="text-center text" width="15%">Cant.</th>
-                                    <th class="text-center text" width="15%">Prec.</th>
-                                    <th class="text-center text" width="15%">Act.</th>
-                                </tr>
-                            </thead>
-                            <tbody class="tablebody">
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="row">
-                        <div class="right">
-                            <p>
-                                Sub-total: &nbsp;<span id="SubTotal"></span><br>
-                                IVA:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;<span id="IVA"></span><br>
-                                Total:&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;<span id="Total"></span><br>
-                            </p>
-                        </div>
-                    </div>
+                <a class="modal-trigger waves-effect waves-light btn right" id="btnorder" href="#modales">
+                    <p>
+                        Sub-total:<span id="SubTotal"></span><br>
+                        IVA:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;<span id="IVA"></span><br>
+                        Total:&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;<span id="Total"></span><br>
+                    </p>
+                </a>
+            </div>
+            <div id="modales" class="modal bottom-sheet center">
+                <div class="modal-content center">
+                    <h4>Lista de Ordenes</h4>
+                    <table class="centered highlight" id="tableproduct">
+                        <thead class="tablehead">
+                            <tr>
+                                <th class="text" width="70%">Nombre</th>
+                                <th class="text" width="15%">Cant.</th>
+                                <th class="text" width="15%">Prec.</th>
+                                <th class="text" width="15%">Act.</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tablebody" class="tablebody">
+
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                <a href="{% url 'order'%}" class=" modal-action modal-close waves-effect waves-green btn-flat">Agree</a>
                 </div>
             </div>
-        </form>
         {% endblock %}
-        
+        <!--contenido de la pagina-->
+        <div id='content'>
+            {% block content %}
+            {% endblock %}
+
+
+        </div>
      </main>
      <footer>
 
      </footer>
-       
-        
+    <!--Scripts--> 
+    <script type="text/javascript">
 
+    // Initialize collapse button
+    $(".button-collapse").sideNav();
 
+    $(document).ready(function(){
+        $('.modal-trigger').leanModal();
+    });
 
-
-
-        <!--Scripts--> 
-        <script type="text/javascript">
-
-        // Initialize collapse button
-        $(".button-collapse").sideNav();
-        
-        $(document).ready(function(){
-            $('.modal-trigger').leanModal();
-        });
-        </script>
-        <script type="text/javascript" src="{% static 'js/app.js'%}"></script>
+    </script>
+    <script type="text/javascript" src="{% static 'js/app.js'%}"></script>
 </body>
 </html>
 

@@ -1,5 +1,6 @@
 from __future__ import unicode_literals
 import datetime
+from django.utils.encoding import python_2_unicode_compatible
 from django.utils import timezone 
 from django.db import models
 from base64 import b64decode
@@ -8,49 +9,44 @@ from datetime import datetime,date
 
 #tabla sale_order
 class SaleOrder(models.Model):
-    id=models.IntegerField(primary_key=True)
     create_date=models.DateTimeField(default=datetime.now, blank=True)
-    write_uid=models.IntegerField()
+    write_uid=models.IntegerField(default=1)
     date_order=models.DateTimeField(default=datetime.now, blank=True,null=False)
-    partner_id=models.ForeignKey('ResPartner',null=True,blank=True)
+    partner_id=models.IntegerField(default=7)
     amount_tax=models.FloatField()
-    procurement_group_id=models.IntegerField()
     amount_untaxed=models.FloatField()
-    message_last_post=models.DateTimeField(default=datetime.now, blank=True)
-    company_id=models.IntegerField()
-    state=models.CharField(max_length=200)
-    pricelist_id=models.IntegerField(null=False)
-    create_uid=models.IntegerField()
+    company_id=models.IntegerField(default=1)
+    state=models.CharField(max_length=200,default="manual")
+    pricelist_id=models.IntegerField(default=1,null=False)
+    create_uid=models.IntegerField(default=1)
     write_date=models.DateTimeField(default=datetime.now, blank=True)
-    partner_invoice_id=models.IntegerField(null=False)
-    user_id=models.IntegerField()
-    date_confirm=models.DateField()
+    partner_invoice_id=models.IntegerField(null=False,default=7)
+    user_id=models.IntegerField(default=1)
     amount_total=models.FloatField()
-    name=models.CharField(max_length=200,null=False)
-    partner_shipping_id=models.IntegerField(null=False)
-    order_policy=models.CharField(max_length=200,null=False)
-    picking_policy=models.CharField(max_length=200,null=False)
-    warehouse_id=models.IntegerField(null=False)
-    shipped=models.BooleanField()
-
+    name=models.CharField(max_length=100)
+    partner_shipping_id=models.IntegerField(null=False, default=7)
+    order_policy=models.CharField(max_length=200, null=False, default="manual")
+    picking_policy=models.CharField(max_length=200, null=False, default="direct")
+    warehouse_id=models.IntegerField(null=False, default=1)
+    
     class Meta:
         db_table = 'sale_order'
 
 class SaleOrderLine(models.Model):
-    id=models.IntegerField(primary_key=True)
     product_uos_qty=models.FloatField()
     create_date=models.DateTimeField(default=datetime.now, blank=True)
     product_uom=models.IntegerField(null=False,default=1)
-    sequence=models.IntegerField(null=False)
-    price_unit=models.FloatField()
+    sequence=models.IntegerField(default=11)
+    price_unit=models.FloatField(null=False)
     product_uom_qty=models.FloatField(null=False)
     write_uid=models.IntegerField(default=1)
     invoiced=models.BooleanField(default=False)
     create_uid=models.IntegerField(default=1)
     company_id=models.IntegerField(default=1)
-    name=models.CharField(max_length=200,null=False)
-    state=models.CharField(max_length=200,null=False)
-    order_partner_id=models.IntegerField(null=False)
+    name=models.CharField(max_length=900,null=False)
+    delay=models.IntegerField(default=0)
+    state=models.CharField(max_length=200,null=False,default='confirmed')
+    order_partner_id=models.IntegerField(null=False,default=7)
     order_id=models.IntegerField(null=False)
     discount=models.FloatField()
     write_date=models.DateTimeField(default=datetime.now, blank=True)
@@ -61,7 +57,12 @@ class SaleOrderLine(models.Model):
         db_table='sale_order_line'
 
 
+class SaleOrderTax(models.Model):
+    order_line_id=models.IntegerField()
+    tax_id=models.IntegerField(default=3)
 
+    class Meta:
+        db_table='sale_order_tax'
 
 
 class MrpProduction(models.Model):
@@ -134,8 +135,8 @@ class ProductTemplate(models.Model):
     write_date=models.DateTimeField()
     active=models.BooleanField()
     rental=models.BooleanField()
-    name=models.CharField(max_length=200,null=False)
-    type=models.CharField(max_length=200,null=False)
+    name=models.CharField(max_length=200, null=False)
+    type=models.CharField(max_length=200, null=False)
     track_all=models.BooleanField()
     track_outgoing=models.BooleanField()
     track_incoming=models.BooleanField()
@@ -171,3 +172,4 @@ class ResPartner(models.Model):
     
     class Meta:
         db_table='res_partner'
+

@@ -118,3 +118,10 @@ html, body {
   height:20px;
   width:35%;
 }
+#btnorder{
+  width:220px;
+  height: 130px;
+}
+.cssCantidad{
+font:120% sans-serif;
+}
